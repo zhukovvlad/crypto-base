@@ -4,7 +4,7 @@ import { CHAT_ROUTE, LOGIN_ROUTE } from "../utils/consts";
 import { privateRoutes, publicRoutes } from "./routes";
 
 const AppRouter = () => {
-  const user = true;
+  const user = false;
 
   return user ? 
     (
