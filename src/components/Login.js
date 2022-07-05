@@ -1,5 +1,6 @@
 import { Container, Grid, Box, Button } from "@mui/material";
 import React from "react";
+import { signInWithGoogle } from "../firebase/firebase.utils";
 
 const Login = () => {
   return (
@@ -21,7 +22,9 @@ const Login = () => {
           direction={"column"}
         >
           <Box p={5}>
-            <Button variant={"outlined"}>Login with Google</Button>
+            <Button onClick={signInWithGoogle} variant={"outlined"}>
+              Login with Google
+            </Button>
           </Box>
         </Grid>
       </Grid>

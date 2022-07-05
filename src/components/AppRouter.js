@@ -2,15 +2,17 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { CHAT_ROUTE, LOGIN_ROUTE } from "../utils/consts";
 import { privateRoutes, publicRoutes } from "./routes";
+import { auth } from "../firebase/firebase.utils";
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const AppRouter = () => {
-  const user = false;
+    const [user] = useAuthState(auth);
 
   return user ? 
     (
         <Routes>
             {privateRoutes.map(({path, Component}) =>
-                <Route path={path} element={Component} exact={true} />
+                <Route key={path} path={path} element={Component} exact={true} />
             )}
             <Route
                 path="*"
@@ -22,7 +24,7 @@ const AppRouter = () => {
     (
         <Routes>
             {publicRoutes.map(({path, Component}) =>
-                <Route path={path} element={Component} exact={true} />
+                <Route key={path} path={path} element={Component} exact={true} />
             )}
             <Route
                 path="*"
