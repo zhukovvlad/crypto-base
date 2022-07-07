@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { CHAT_ROUTE, LOGIN_ROUTE } from "../utils/consts";
+import { DASHBOARD_ROUTE, LOGIN_ROUTE } from "../utils/consts";
 import { privateRoutes, publicRoutes } from "./routes";
 import { auth } from "../firebase/firebase.utils";
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -16,7 +16,7 @@ const AppRouter = () => {
             )}
             <Route
                 path="*"
-                element={<Navigate to={CHAT_ROUTE} replace />}
+                element={<Navigate to={DASHBOARD_ROUTE} replace />}
             />
         </Routes>
     )

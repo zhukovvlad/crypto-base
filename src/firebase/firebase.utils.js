@@ -9,7 +9,7 @@ const app = initializeApp(config);
 
 export const auth = getAuth(app);
 
-const db = getFirestore(app);
+export const db = getFirestore(app);
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
     if (!userAuth) return;
