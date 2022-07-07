@@ -2,9 +2,7 @@ import React from "react";
 import { auth, db } from "../firebase/firebase.utils";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Container from "@mui/material/Container";
-import { Button, Grid } from "@mui/material";
-import { NavLink } from "react-router-dom";
-import { ADDCOIN_ROUTE } from "../utils/consts";
+import { Grid } from "@mui/material";
 import AddCoin from "./AddCoin";
 import Divider from '@mui/material/Divider';
 
