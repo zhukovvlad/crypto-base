@@ -5,6 +5,7 @@ import Container from "@mui/material/Container";
 
 const Chat = () => {
   const [user] = useAuthState(auth);
+
   return (
     <Container
       sx={{
