@@ -1,9 +1,5 @@
 const findMaxInArray = (array) => {
-  const newArray = [];
-  array.map((item) => newArray.push(item[1]));
-  console.log("Our new Array: ", newArray);
-  console.log("Max element: ", Math.max(...newArray));
-  return newArray;
+  return Math.max(...array.map((item) => item[1]));
 };
 
 export default findMaxInArray;
