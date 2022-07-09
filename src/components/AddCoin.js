@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Grid } from "@mui/material";
 import axios from "axios";
-import { HistoricalChart } from "../config/api";
+import { HistoricalChart, CoinData } from "../config/api";
 import findMaxInArray from "../utils/findMax";
 
 const AddCoin = () => {
@@ -10,7 +10,7 @@ const AddCoin = () => {
 
   const fetchHistoricalData = async (coinId) => {
     const { data } = await axios
-      .get(HistoricalChart(coinId))
+      .get(CoinData(coinId))
       .catch(error => {
         // handle error
         return { data: error };
@@ -18,7 +18,9 @@ const AddCoin = () => {
 
     // console.log(data.prices ? data.prices: data.response.data);
 
-    setCoinData(data.prices ? findMaxInArray(data.prices): data.response.data);
+    setCoinData(data);
+
+    //setCoinData(data.prices ? findMaxInArray(data.prices): data.response.data);
   };
 
   return (
@@ -30,7 +32,7 @@ const AddCoin = () => {
         <Button onClick={() => fetchHistoricalData(coin)}>Add</Button>
       </Grid>
       <Grid item xs={7}></Grid>
-      
+
     </Grid>
   );
 };
