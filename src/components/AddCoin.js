@@ -18,7 +18,7 @@ const AddCoin = () => {
   const coinsRef = collection(db, "coins");
 
   const getCoinFromDatabase = async (coinId) => {
-    const q = query(coinsRef, where("coin", "==", coinId));
+    const q = query(coinsRef, where("coin", "==", coinId), where("user", "==", user.uid));
 
     const querySnapshot = await getDocs(q);
 
@@ -33,6 +33,10 @@ const AddCoin = () => {
       return;
     }
 
+    /**
+     * POST coin info into FireBase
+     * @param {string} entity Coin Id that we want to add to Database
+     */
     const postCoin = async (entity) => {
       try {
         const docRef = await addDoc(collection(db, COIN_DATABASE), {
@@ -52,6 +56,10 @@ const AddCoin = () => {
     postCoin(coinData.data.id);
   }, [coinData, user.uid]);
 
+  /**
+   * Receiving data from CoinGecko API.
+   * @param {string} coinId coinId for receiving data from CoinGecko API
+   */
   const fetchHistoricalData = async (coinId) => {
     const data = await axios.get(CoinData(coinId)).catch((error) => {
       return error;
