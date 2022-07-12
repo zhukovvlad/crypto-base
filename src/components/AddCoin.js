@@ -12,26 +12,32 @@ const AddCoin = () => {
   const [user] = useAuthState(auth);
   const [coin, setCoin] = useState("");
   const [coinData, setCoinData] = useState([]);
+  const [coinList, setCoinList] = useState([]);
 
-  const isFirstRender = useRef(true);
+  //const isFirstRender = useRef(true);
 
   const coinsRef = collection(db, "coins");
 
   const getCoinFromDatabase = async (coinId) => {
-    const q = query(coinsRef, where("coin", "==", coinId), where("user", "==", user.uid));
+    const coinsArray = [];
+    const q = query(coinsRef, where("user", "==", user.uid));
 
     const querySnapshot = await getDocs(q);
 
+    console.log("Our coins: ", querySnapshot);
+
     querySnapshot.forEach((doc) => {
-        console.log(doc.id, ' => ', doc.data());
+      //console.log(doc.id, ' => ', doc.data());
+      coinsArray.push(doc.data());
     });
+    setCoinList(coinsArray);
   };
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+    //if (isFirstRender.current) {
+    //  isFirstRender.current = false;
+    //  return;
+    //}
 
     /**
      * POST coin info into FireBase
@@ -81,6 +87,9 @@ const AddCoin = () => {
         <Button onClick={() => fetchHistoricalData(coin)}>Add</Button>
       </Grid>
       <Grid item xs={7}></Grid>
+      {coinList.map((data) => (
+        <div>{data.coin}</div>
+      ))}
     </Grid>
   );
 };
