@@ -3,7 +3,7 @@ import { TextField, Button, Grid } from "@mui/material";
 import axios from "axios";
 import { CoinData } from "../config/api";
 import { db, auth } from "../firebase/firebase.utils";
-import { addDoc, collection, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, connectFirestoreEmulator, getDoc, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { COIN_DATABASE } from "../utils/consts";
 import { query, where } from "firebase/firestore";
@@ -18,7 +18,7 @@ const AddCoin = () => {
 
   const coinsRef = collection(db, "coins");
 
-  const getCoinFromDatabase = async (coinId) => {
+  const getCoinFromDatabase = async () => {
     const coinsArray = [];
     const q = query(coinsRef, where("user", "==", user.uid));
 
@@ -43,12 +43,13 @@ const AddCoin = () => {
      * POST coin info into FireBase
      * @param {string} entity Coin Id that we want to add to Database
      */
+    getCoinFromDatabase();
+
     const postCoin = async (entity) => {
       try {
         const docRef = await addDoc(collection(db, COIN_DATABASE), {
           user: user.uid,
           coin: entity,
-          athChange: coinData.data.market_data.ath_change_percentage.usd,
         });
       } catch (error) {
         console.log("Error adding document: ", error);
@@ -67,6 +68,12 @@ const AddCoin = () => {
    * @param {string} coinId coinId for receiving data from CoinGecko API
    */
   const fetchHistoricalData = async (coinId) => {
+    const coincide = coinList.filter((obj) => Object.values(obj).indexOf(coinId) > -1);
+    console.log("Coincides: ", coincide);
+    if (coincide.length > 0) {
+      console.log(`Coin ${coinId} is already exists in database`);
+      return;
+    }
     const data = await axios.get(CoinData(coinId)).catch((error) => {
       return error;
     });
