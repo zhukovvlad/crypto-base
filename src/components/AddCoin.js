@@ -3,7 +3,13 @@ import { TextField, Button, Grid } from "@mui/material";
 import axios from "axios";
 import { CoinData } from "../config/api";
 import { db, auth } from "../firebase/firebase.utils";
-import { addDoc, collection, connectFirestoreEmulator, getDoc, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  connectFirestoreEmulator,
+  getDoc,
+  getDocs,
+} from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { COIN_DATABASE } from "../utils/consts";
 import { query, where } from "firebase/firestore";
@@ -18,20 +24,27 @@ const AddCoin = () => {
 
   const coinsRef = collection(db, "coins");
 
-  const getCoinFromDatabase = async () => {
-    const coinsArray = [];
-    const q = query(coinsRef, where("user", "==", user.uid));
+  /**
+   * useEffect for initial render
+   */
+  useEffect(() => {
+    const getCoinFromDatabase = async () => {
+      const coinsArray = [];
+      const q = query(coinsRef, where("user", "==", user.uid));
 
-    const querySnapshot = await getDocs(q);
+      const querySnapshot = await getDocs(q);
 
-    console.log("Our coins: ", querySnapshot);
+      console.log("Our coins: ", querySnapshot);
 
-    querySnapshot.forEach((doc) => {
-      //console.log(doc.id, ' => ', doc.data());
-      coinsArray.push(doc.data());
-    });
-    setCoinList(coinsArray);
-  };
+      querySnapshot.forEach((doc) => {
+        //console.log(doc.id, ' => ', doc.data());
+        coinsArray.push(doc.data());
+      });
+      setCoinList(coinsArray);
+    };
+
+    getCoinFromDatabase();
+  }, [coinList, coinsRef, user.uid]);
 
   useEffect(() => {
     //if (isFirstRender.current) {
@@ -43,7 +56,7 @@ const AddCoin = () => {
      * POST coin info into FireBase
      * @param {string} entity Coin Id that we want to add to Database
      */
-    getCoinFromDatabase();
+    //getCoinFromDatabase();
 
     const postCoin = async (entity) => {
       try {
@@ -68,7 +81,9 @@ const AddCoin = () => {
    * @param {string} coinId coinId for receiving data from CoinGecko API
    */
   const fetchHistoricalData = async (coinId) => {
-    const coincide = coinList.filter((obj) => Object.values(obj).indexOf(coinId) > -1);
+    const coincide = coinList.filter(
+      (obj) => Object.values(obj).indexOf(coinId) > -1
+    );
     console.log("Coincides: ", coincide);
     if (coincide.length > 0) {
       console.log(`Coin ${coinId} is already exists in database`);
@@ -82,7 +97,7 @@ const AddCoin = () => {
 
     setCoinData(data);
 
-    getCoinFromDatabase(coinId);
+    setCoinList(coinList => [...coinList, coinId]);
   };
 
   return (
@@ -94,9 +109,11 @@ const AddCoin = () => {
         <Button onClick={() => fetchHistoricalData(coin)}>Add</Button>
       </Grid>
       <Grid item xs={7}></Grid>
-      {coinList.map((data) => (
-        <div>{data.coin}</div>
-      ))}
+      <div>
+        {coinList.map((data) => (
+          <div>{data.coin}</div>
+        ))}
+      </div>
     </Grid>
   );
 };
