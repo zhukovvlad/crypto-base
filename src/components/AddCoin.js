@@ -3,16 +3,11 @@ import { TextField, Button, Grid } from "@mui/material";
 import axios from "axios";
 import { CoinData } from "../config/api";
 import { db, auth } from "../firebase/firebase.utils";
-import {
-  addDoc,
-  collection,
-  connectFirestoreEmulator,
-  getDoc,
-  getDocs,
-} from "firebase/firestore";
+import { addDoc, collection, getDocs, orderBy } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { COIN_DATABASE } from "../utils/consts";
 import { query, where } from "firebase/firestore";
+import CoinsTable from "./CoinsTable";
 
 const AddCoin = () => {
   const [user] = useAuthState(auth);
@@ -44,7 +39,7 @@ const AddCoin = () => {
     };
 
     getCoinFromDatabase();
-  }, [coinList, coinsRef, user.uid]);
+  }, [coinList, user.uid]);
 
   useEffect(() => {
     //if (isFirstRender.current) {
@@ -97,7 +92,7 @@ const AddCoin = () => {
 
     setCoinData(data);
 
-    setCoinList(coinList => [...coinList, coinId]);
+    setCoinList((coinList) => [...coinList, coinId]);
   };
 
   return (
@@ -114,6 +109,7 @@ const AddCoin = () => {
           <div>{data.coin}</div>
         ))}
       </div>
+      <CoinsTable coinList={coinList} />
     </Grid>
   );
 };
