@@ -3,7 +3,7 @@ import { TextField, Button, Grid } from "@mui/material";
 import axios from "axios";
 import { CoinData } from "../config/api";
 import { db, auth } from "../firebase/firebase.utils";
-import { addDoc, collection, getDocs, orderBy } from "firebase/firestore";
+import { addDoc, collection, getDocs, getDoc, orderBy } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { COIN_DATABASE } from "../utils/consts";
 import { query, where } from "firebase/firestore";
@@ -39,7 +39,7 @@ const AddCoin = () => {
     };
 
     getCoinFromDatabase();
-  }, [coinList, user.uid]);
+  }, []);
 
   useEffect(() => {
     //if (isFirstRender.current) {
