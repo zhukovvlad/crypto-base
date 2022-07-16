@@ -104,11 +104,6 @@ const AddCoin = () => {
         <Button onClick={() => fetchHistoricalData(coin)}>Add</Button>
       </Grid>
       <Grid item xs={7}></Grid>
-      <div>
-        {coinList.map((data) => (
-          <div>{data.coin}</div>
-        ))}
-      </div>
       <CoinsTable coinList={coinList} />
     </Grid>
   );
