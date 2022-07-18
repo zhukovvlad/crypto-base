@@ -15,10 +15,9 @@ import { query, where } from "firebase/firestore";
 import { CoinsData } from "../config/api";
 import axios from "axios";
 
-
 const AddCoin = () => {
   const [user] = useAuthState(auth);
-  const [coin, setCoin] = useState('');
+  const [coin, setCoin] = useState("");
   const [coinList, setCoinList] = useState([]);
 
   const coinsRef = collection(db, "coins");
@@ -30,21 +29,26 @@ const AddCoin = () => {
       querySnapshot.forEach((doc) => {
         setCoinList((coinList) => [...coinList, doc.data()]);
       });
+      console.log("querySnapshot, ", querySnapshot);
+      console.log(coinList);
+      return coinList;
     };
 
     const getDataFromCoinGecko = async (coinsArray) => {
-        coinsArray = coinsArray.map(coin => {return coin.coin});
-        const queryString = coinsArray.join();
-        console.log("QueryString: ", queryString);
-        const l = await axios.get(CoinsData(queryString)).catch((error) => {
-            return error;
-          });
+      coinsArray = coinsArray.map((coin) => {
+        return coin.coin;
+      });
+      const queryString = coinsArray.join();
+      console.log("Our coinList ", coinList);
+      console.log("QueryString: ", queryString);
+      const l = await axios.get(CoinsData(queryString)).catch((error) => {
+        return error;
+      });
 
-          console.log(l);
+      console.log(l);
     };
 
     getCoinFromDatabase();
-    getDataFromCoinGecko(coinList);
   }, []);
 
   return (
