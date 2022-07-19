@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { TextField, Button, Grid } from "@mui/material";
+import React, { useState, useEffect, Fragment } from "react";
+import { TextField, Button, Grid, Typography } from "@mui/material";
 import { db, auth } from "../firebase/firebase.utils";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
@@ -19,6 +19,7 @@ const AddCoin = () => {
   const [user] = useAuthState(auth);
   const [coin, setCoin] = useState("");
   const [coinList, setCoinList] = useState([]);
+  const [coinGeckoList, setCoinGeckoList] = useState([]);
 
   const coinsRef = collection(db, "coins");
   const q = query(coinsRef, where("user", "==", user.uid));
@@ -30,10 +31,12 @@ const AddCoin = () => {
         setCoinList((coinList) => [...coinList, doc.data()]);
       });
       console.log("querySnapshot, ", querySnapshot);
-      console.log(coinList);
-      return coinList;
     };
 
+    getCoinFromDatabase();
+  }, []);
+
+  useEffect(() => {
     const getDataFromCoinGecko = async (coinsArray) => {
       coinsArray = coinsArray.map((coin) => {
         return coin.coin;
@@ -45,23 +48,27 @@ const AddCoin = () => {
         return error;
       });
 
-      console.log(l);
+      setCoinGeckoList(l.data);
     };
 
-    getCoinFromDatabase();
-  }, []);
+    if (coinList.length > 0) {
+      getDataFromCoinGecko(coinList);
+    }
+  }, [coinList]);
 
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={4}>
-        <TextField value={coin} onChange={(e) => setCoin(e.target.value)} />
+    <Fragment>
+      <Grid container spacing={1}>
+        <Grid item xs={4}>
+          <TextField value={coin} onChange={(e) => setCoin(e.target.value)} />
+        </Grid>
+        <Grid item xs={1}>
+          <Button>Add</Button>
+        </Grid>
+        <Grid item xs={7}></Grid>
       </Grid>
-      <Grid item xs={1}>
-        <Button>Add</Button>
-      </Grid>
-      <Grid item xs={7}></Grid>
-      <CoinsTable coinList={coinList} />
-    </Grid>
+      <CoinsTable coinGeckoList={coinGeckoList} />
+    </Fragment>
   );
 };
 
