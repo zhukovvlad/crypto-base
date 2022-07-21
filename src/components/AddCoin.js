@@ -1,19 +1,18 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { TextField, Button, Grid, Typography } from "@mui/material";
+import { TextField, Button, Grid } from "@mui/material";
 import { db, auth } from "../firebase/firebase.utils";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   addDoc,
   collection,
   getDocs,
-  getDoc,
-  orderBy,
 } from "firebase/firestore";
 import CoinsTable from "./CoinsTable";
 
 import { query, where } from "firebase/firestore";
 import { CoinsData, CoinData } from "../config/api";
 import axios from "axios";
+import { COIN_DATABASE } from "../utils/consts";
 
 const AddCoin = () => {
   const [user] = useAuthState(auth);
@@ -72,6 +71,14 @@ const AddCoin = () => {
 
     if (data) {
       console.log("data = ", data);
+      try {
+        await addDoc(collection(db, COIN_DATABASE), {
+          user: user.uid,
+          coin: coinId,
+        });
+      } catch (error) {
+        console.log("Error adding document: ", error);
+      }
       setCoinList((coinList) => [...coinList, {'coin': coinId, 'user': user.uid}]);
     }
   };
