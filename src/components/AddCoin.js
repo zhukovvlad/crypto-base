@@ -12,7 +12,7 @@ import {
 import CoinsTable from "./CoinsTable";
 
 import { query, where } from "firebase/firestore";
-import { CoinsData } from "../config/api";
+import { CoinsData, CoinData } from "../config/api";
 import axios from "axios";
 
 const AddCoin = () => {
@@ -56,6 +56,26 @@ const AddCoin = () => {
     }
   }, [coinList]);
 
+  const postCoin = async (coinId) => {
+    if (coinList.length > 0) {
+      for (let index = 0; index < coinList.length; index++) {
+        if (coinId === coinList[index].coin) {
+          console.log(`We already have ${coinId} in databse`);
+          return;
+        }
+      }
+    }
+
+    const { data } = await axios.get(CoinData(coinId)).catch((error) => {
+      return error;
+    });
+
+    if (data) {
+      console.log("data = ", data);
+      setCoinList((coinList) => [...coinList, {'coin': coinId, 'user': user.uid}]);
+    }
+  };
+
   return (
     <Fragment>
       <Grid container spacing={1}>
@@ -63,7 +83,7 @@ const AddCoin = () => {
           <TextField value={coin} onChange={(e) => setCoin(e.target.value)} />
         </Grid>
         <Grid item xs={1}>
-          <Button>Add</Button>
+          <Button onClick={() => postCoin(coin)}>Add</Button>
         </Grid>
         <Grid item xs={7}></Grid>
       </Grid>
