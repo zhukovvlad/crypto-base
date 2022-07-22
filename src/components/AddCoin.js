@@ -2,11 +2,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import { TextField, Button, Grid } from "@mui/material";
 import { db, auth } from "../firebase/firebase.utils";
 import { useAuthState } from "react-firebase-hooks/auth";
-import {
-  addDoc,
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import CoinsTable from "./CoinsTable";
 
 import { query, where } from "firebase/firestore";
@@ -60,12 +56,14 @@ const AddCoin = () => {
       for (let index = 0; index < coinList.length; index++) {
         if (coinId === coinList[index].coin) {
           console.log(`We already have ${coinId} in databse`);
+          setCoin("");
           return;
         }
       }
     }
 
     const { data } = await axios.get(CoinData(coinId)).catch((error) => {
+      setCoin("");
       return error;
     });
 
@@ -79,8 +77,12 @@ const AddCoin = () => {
       } catch (error) {
         console.log("Error adding document: ", error);
       }
-      setCoinList((coinList) => [...coinList, {'coin': coinId, 'user': user.uid}]);
+      setCoinList((coinList) => [
+        ...coinList,
+        { coin: coinId, user: user.uid },
+      ]);
     }
+    setCoin("");
   };
 
   return (
