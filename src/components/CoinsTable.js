@@ -4,12 +4,12 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Button,
   TableSortLabel,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 import { numberWithCommas } from "../utils/usefulFunc";
+import DeleteCoin from "./DeleteCoin";
 
 const CoinsTable = ({ coinGeckoList }) => {
   const [rowData, setRowData] = useState([]);
@@ -46,6 +46,7 @@ const CoinsTable = ({ coinGeckoList }) => {
     setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
   };
 
+
   return (
     <Table>
       <TableHead>
@@ -64,24 +65,22 @@ const CoinsTable = ({ coinGeckoList }) => {
       <TableBody>
         {rowData.map((data) => (
           <TableRow key={data.symbol}>
-            <TableCell>{data.name}</TableCell>
-            <TableCell>{data.symbol.toUpperCase()}</TableCell>
-            <TableCell>
+            <TableCell align="center">{data.name}</TableCell>
+            <TableCell align="center">{data.symbol.toUpperCase()}</TableCell>
+            <TableCell align="center">
               {"$ "}
               {numberWithCommas(data.current_price.toFixed(2))}
             </TableCell>
-            <TableCell>
+            <TableCell align="center">
               {"$ "}
               {numberWithCommas(data.ath.toFixed(2))}
             </TableCell>
-            <TableCell>
+            <TableCell align="center">
               {data.ath_change_percentage.toFixed(2)}
               {"%"}
             </TableCell>
-            <TableCell>
-              <Button variant="contained" color="secondary">
-                Delete Coin
-              </Button>
+            <TableCell align="center">
+              <DeleteCoin coin={data} setRowData={setRowData} rowData={rowData} />
             </TableCell>
           </TableRow>
         ))}
