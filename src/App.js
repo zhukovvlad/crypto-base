@@ -5,19 +5,25 @@ import SearchAppBar from "./components/Header";
 import Loader from "./components/Loader";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase/firebase.utils";
+import { createContext, useState } from "react";
+
+export const Context = createContext();
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
+  const [coinList, setCoinList] = useState([]);
 
   if (loading) {
     return <Loader />;
   }
   return (
     <div className="App">
-      <BrowserRouter>
-        <SearchAppBar />
-        <AppRouter />
-      </BrowserRouter>
+      <Context.Provider value={[coinList, setCoinList]}>
+        <BrowserRouter>
+          <SearchAppBar />
+          <AppRouter />
+        </BrowserRouter>
+      </Context.Provider>
     </div>
   );
 }

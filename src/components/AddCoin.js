@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 import { TextField, Button, Grid } from "@mui/material";
 import { db, auth } from "../firebase/firebase.utils";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -9,11 +9,13 @@ import { query, where } from "firebase/firestore";
 import { CoinsData, CoinData } from "../config/api";
 import axios from "axios";
 import { COIN_DATABASE } from "../utils/consts";
+import { Context } from "../App";
 
 const AddCoin = () => {
   const [user] = useAuthState(auth);
   const [coin, setCoin] = useState("");
-  const [coinList, setCoinList] = useState([]);
+  // const [coinList, setCoinList] = useState([]);
+  const [coinList, setCoinList] = useContext(Context);
   const [coinGeckoList, setCoinGeckoList] = useState([]);
 
   const coinsRef = collection(db, "coins");
