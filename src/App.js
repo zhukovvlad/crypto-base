@@ -1,7 +1,7 @@
 import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import AppRouter from "./components/AppRouter";
-import SearchAppBar from "./components/Header";
+import ButtonAppBar from "./components/Header";
 import Loader from "./components/Loader";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase/firebase.utils";
@@ -20,7 +20,7 @@ function App() {
     <div className="App">
       <Context.Provider value={[coinList, setCoinList]}>
         <BrowserRouter>
-          <SearchAppBar />
+          <ButtonAppBar />
           <AppRouter />
         </BrowserRouter>
       </Context.Provider>

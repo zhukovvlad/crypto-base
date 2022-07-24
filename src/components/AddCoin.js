@@ -35,8 +35,9 @@ const AddCoin = () => {
 
   useEffect(() => {
     const getDataFromCoinGecko = async (coinsArray) => {
+      console.log("Our coinsArray ", coinsArray);
       coinsArray = coinsArray.map((coin) => {
-        return coin.coin;
+        return coin.id;
       });
       const queryString = coinsArray.join();
       console.log("Our coinList ", coinList);
@@ -56,7 +57,7 @@ const AddCoin = () => {
   const postCoin = async (coinId) => {
     if (coinList.length > 0) {
       for (let index = 0; index < coinList.length; index++) {
-        if (coinId === coinList[index].coin) {
+        if (coinId === coinList[index].id) {
           console.log(`We already have ${coinId} in databse`);
           setCoin("");
           return;
@@ -74,14 +75,14 @@ const AddCoin = () => {
       try {
         await addDoc(collection(db, COIN_DATABASE), {
           user: user.uid,
-          coin: coinId,
+          id: coinId,
         });
       } catch (error) {
         console.log("Error adding document: ", error);
       }
       setCoinList((coinList) => [
         ...coinList,
-        { coin: coinId, user: user.uid },
+        { id: coinId, user: user.uid },
       ]);
     }
     setCoin("");
