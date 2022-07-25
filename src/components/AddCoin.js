@@ -94,10 +94,10 @@ const AddCoin = () => {
         <Grid item xs={4}>
           <TextField value={coin} onChange={(e) => setCoin(e.target.value)} />
         </Grid>
-        <Grid item xs={1}>
-          <Button onClick={() => postCoin(coin)}>Add</Button>
+        <Grid item xs={2}>
+          <Button color="primary" variant="contained" onClick={() => postCoin(coin)}>Add Coin</Button>
         </Grid>
-        <Grid item xs={7}></Grid>
+        <Grid item xs={6}></Grid>
       </Grid>
       <CoinsTable coinGeckoList={coinGeckoList} />
     </Fragment>

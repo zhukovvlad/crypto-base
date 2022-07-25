@@ -9,8 +9,6 @@ import Divider from '@mui/material/Divider';
 const DashBoard = () => {
   const [user] = useAuthState(auth);
 
-  console.log(db);
-
   return (
     <Container
       sx={{
