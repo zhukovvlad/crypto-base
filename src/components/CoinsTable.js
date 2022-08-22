@@ -15,6 +15,8 @@ const CoinsTable = ({ coinGeckoList }) => {
   const [rowData, setRowData] = useState([]);
   const [orderDirection, setOrderDirection] = useState("asc");
 
+  console.log(coinGeckoList);
+
   useEffect(() => {
     setRowData(sortArray(coinGeckoList, "desc"));
   }, [coinGeckoList]);
@@ -53,6 +55,7 @@ const CoinsTable = ({ coinGeckoList }) => {
         <TableRow>
           <TableCell align="center">Coin</TableCell>
           <TableCell align="center">Symbol</TableCell>
+          <TableCell align="center">Rank</TableCell>
           <TableCell align="center">Price</TableCell>
           <TableCell align="center">ATH</TableCell>
           <TableCell align="center" onClick={handleSortRequest}>
@@ -67,6 +70,7 @@ const CoinsTable = ({ coinGeckoList }) => {
           <TableRow key={data.symbol}>
             <TableCell align="center">{data.name}</TableCell>
             <TableCell align="center">{data.symbol.toUpperCase()}</TableCell>
+            <TableCell align="center">{data.market_cap_rank}</TableCell>
             <TableCell align="center">
               {"$ "}
               {numberWithCommas(data.current_price.toFixed(2))}
