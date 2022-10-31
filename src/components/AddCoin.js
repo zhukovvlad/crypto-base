@@ -11,6 +11,9 @@ import axios from "axios";
 import { COIN_DATABASE } from "../utils/consts";
 import { Context } from "../App";
 
+/**
+ * General component description in JSDoc format. Markdown is *supported*.
+ */
 const AddCoin = () => {
   const [user] = useAuthState(auth);
   const [coin, setCoin] = useState("");
@@ -21,6 +24,9 @@ const AddCoin = () => {
   const coinsRef = collection(db, "coins");
   const q = query(coinsRef, where("user", "==", user.uid));
 
+  /**
+   * Hello function
+   */
   useEffect(() => {
     const getCoinFromDatabase = async () => {
       const querySnapshot = await getDocs(q);
@@ -31,6 +37,7 @@ const AddCoin = () => {
     };
 
     getCoinFromDatabase();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

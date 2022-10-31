@@ -1,0 +1,11 @@
+{
+  "files": {
+    "main.js": "/build/bundle.57be616d.js",
+    "main.css": "/static/css/main.05ebd4c1.css",
+    "index.html": "/index.html"
+  },
+  "entrypoints": [
+    "build/bundle.57be616d.js",
+    "static/css/main.05ebd4c1.css"
+  ]
+}

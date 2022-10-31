@@ -1,10 +1,10 @@
 import React from "react";
-import { auth, db } from "../firebase/firebase.utils";
+import { auth } from "../firebase/firebase.utils";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Container from "@mui/material/Container";
 import { Grid } from "@mui/material";
 import AddCoin from "./AddCoin";
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 
 const DashBoard = () => {
   const [user] = useAuthState(auth);
@@ -18,7 +18,7 @@ const DashBoard = () => {
       Hello, {user.displayName}
       <Divider sx={{ marginY: 1 }} />
       <Grid container>
-          <AddCoin />
+        <AddCoin />
       </Grid>
     </Container>
   );
