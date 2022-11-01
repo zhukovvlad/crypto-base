@@ -1,45 +1,21 @@
 import { Box, TextField, Button } from "@mui/material";
 import React from "react";
 import { useState } from "react";
-import { HistoricalChart } from "../config/api";
-import axios from "axios";
 
-function CorrelationForm({ onClick }) {
+function CorrelationForm({ onFetchToDo }) {
   const [correlatedCoins, setCorrelatedCoins] = useState({
     firstCoin: "",
     secondCoin: "",
   });
 
-  const [coinsResponse, setCoinsResponse] = useState({
-    firstCoinResponse: [],
-    secondCoinResponse: [],
-  });
-
-  const getCoinArray = async () => {
+  const handleFetchToDo = async () => {
     const coinsArray = [correlatedCoins.firstCoin, correlatedCoins.secondCoin];
-    const datas = await axios.all(
-      coinsArray.map((coin) =>
-        axios.get(HistoricalChart(coin)).catch((error) => {
-          setCoinsResponse({ errorResponse: error });
-          return error;
-        })
-      )
-    );
-
-    if (datas) {
-      console.log("We have prices for firstCoin: ", datas[0].data.prices);
-      console.log("We have prices for secondCoin: ", datas[1].data.prices);
-      setCoinsResponse({
-        firstCoinResponse: datas[0].data.prices,
-        secondCoinResponse: datas[1].data.prices,
-      });
+    try {
+      const datas = await onFetchToDo(coinsArray);
+      return datas;
+    } catch (e) {
+      return e;
     }
-
-    console.log("We have response: ", coinsResponse);
-  };
-
-  const handleChange = () => {
-    getCoinArray().then(onClick(coinsResponse));
   };
 
   return (
@@ -79,7 +55,7 @@ function CorrelationForm({ onClick }) {
           }
         />
       </div>
-      <Button sx={{ m: 1 }} variant="contained" onClick={handleChange}>
+      <Button sx={{ m: 1 }} variant="contained" onClick={handleFetchToDo}>
         Submit
       </Button>
     </Box>
